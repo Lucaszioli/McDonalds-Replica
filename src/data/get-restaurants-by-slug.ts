@@ -5,6 +5,13 @@ export const getRestaurantBySlug = async (slug: string) => {
     where: {
       slug: slug,
     },
+    include: {
+      categories: {
+        include: {
+          products: true,
+        },
+      },
+    },
   });
 
   return restaurant;

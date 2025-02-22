@@ -2,8 +2,9 @@ import { ConsumptionMethod } from "@prisma/client";
 import { notFound } from "next/navigation";
 import React from "react";
 
-import { db } from "@/lib/prisma";
+import { getRestaurantBySlug } from "@/data/get-restaurants-by-slug";
 
+import RestaurantCategories from "./components/categories";
 import RestaurantHeader from "./components/header";
 
 interface RestaurantMenuPageProps {
@@ -23,15 +24,18 @@ const RestaurantMenuPage = async ({
 }: RestaurantMenuPageProps) => {
   const { slug } = await params;
   const { consumptionMethod } = await searchParams;
-  const restaurant = await db.restaurant.findUnique({
-    where: { slug },
-  });
+  const restaurant = await getRestaurantBySlug(slug);
 
   if (!isConsumptionMethodValid(consumptionMethod) || !restaurant) {
     return notFound();
   }
 
-  return <RestaurantHeader restaurant={restaurant} />;
+  return (
+    <div>
+      <RestaurantHeader restaurant={restaurant} />
+      <RestaurantCategories restaurant={restaurant} />
+    </div>
+  );
 };
 
 export default RestaurantMenuPage;
