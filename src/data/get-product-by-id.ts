@@ -5,5 +5,8 @@ export const getProductById = async (id: string) => {
     where: {
       id,
     },
+    include: {
+      restaurant: true,
+    },
   });
 };
