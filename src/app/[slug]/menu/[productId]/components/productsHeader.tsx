@@ -3,7 +3,7 @@
 import { Product } from "@prisma/client";
 import { ChevronLeftIcon, ScrollTextIcon } from "lucide-react";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,10 @@ interface ProductsHeaderProps {
 const ProductsHeader = ({ product }: ProductsHeaderProps) => {
   const router = useRouter();
   const { slug } = useParams<{ slug: string }>();
+  const searchParams = useSearchParams();
+  const consumptionMethod = searchParams.get("consumptionMethod");
   const seeOrders = () => {
-    router.push(`/${slug}/orders`);
+    router.push(`/${slug}/orders/?consumptionMethod=${consumptionMethod}`);
   };
   return (
     <div className="relative min-h-[300px] w-full">

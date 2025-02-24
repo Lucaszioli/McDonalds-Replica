@@ -1,7 +1,7 @@
 "use client";
 import { Prisma } from "@prisma/client";
 import { ChevronLeftIcon, ScrollTextIcon } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -29,8 +29,10 @@ interface OrderListProp {
 const OrderList = ({ orders }: OrderListProp) => {
   const router = useRouter();
   const { slug } = useParams();
+  const searchParams = useSearchParams();
+  const consumptionMethod = searchParams.get("consumptionMethod");
   const backHome = () => {
-    router.push(`/${slug}`);
+    router.push(`/${slug}/menu/?consumptionMethod=${consumptionMethod}`);
   };
   return (
     <div className="space-y-6 p-6">
