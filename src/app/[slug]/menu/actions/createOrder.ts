@@ -1,6 +1,7 @@
 "use server";
 
 import { ConsumptionMethod, StatusOrder } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 import { db } from "@/lib/prisma";
 
@@ -60,4 +61,5 @@ export const createOrder = async (input: CreateOrderInput) => {
       ),
     },
   });
+  redirect(`/${input.slug}/orders/?email=${input.customerEmail}`);
 };
