@@ -12,7 +12,7 @@ interface CartItemProps {
 }
 
 const CartProduct = ({ product }: CartItemProps) => {
-  const { decreaseProductQuantity, increaseProductQuantity } =
+  const { decreaseProductQuantity, increaseProductQuantity, removeProduct } =
     useContext(CartContext);
   const handleColor = (quantity: number) => {
     if (quantity > 1) {
@@ -32,7 +32,7 @@ const CartProduct = ({ product }: CartItemProps) => {
             {product.name}
           </p>
           <p className="text-sm font-semibold">
-            {formatCurrency(product.price)}
+            {formatCurrency(product.price * product.quantity)}
           </p>
           <div className="flex items-center gap-1 text-center">
             <div className="h-7 w-7">
@@ -55,7 +55,11 @@ const CartProduct = ({ product }: CartItemProps) => {
           </div>
         </div>
       </div>
-      <Button className="h-7 w-7 rounded-lg" variant="outline">
+      <Button
+        onClick={() => removeProduct(product.id)}
+        className="h-7 w-7 rounded-lg"
+        variant="outline"
+      >
         <TrashIcon />
       </Button>
     </div>
