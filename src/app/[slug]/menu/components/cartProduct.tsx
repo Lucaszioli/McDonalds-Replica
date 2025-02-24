@@ -1,17 +1,26 @@
 import { ChevronLeftIcon, ChevronRightIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
 
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/helpers/formatCurrency";
 
-import { iCartProduct } from "../context/cart";
+import { CartContext, iCartProduct } from "../context/cart";
 
 interface CartItemProps {
   product: iCartProduct;
 }
 
 const CartProduct = ({ product }: CartItemProps) => {
+  const { decreaseProductQuantity, increaseProductQuantity } =
+    useContext(CartContext);
+  const handleColor = (quantity: number) => {
+    if (quantity > 1) {
+      return "destructive";
+    }
+    return "outline";
+  };
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -26,11 +35,21 @@ const CartProduct = ({ product }: CartItemProps) => {
             {formatCurrency(product.price)}
           </p>
           <div className="flex items-center gap-1 text-center">
-            <Button variant="outline" className="h-7 w-7 rounded-xl">
-              <ChevronLeftIcon size={14} />
-            </Button>
+            <div className="h-7 w-7">
+              <Button
+                onClick={() => decreaseProductQuantity(product.id)}
+                variant={handleColor(product.quantity)}
+                className="h-7 w-7 rounded-xl"
+              >
+                <ChevronLeftIcon size={14} />
+              </Button>
+            </div>
             <p className="w-8 text-xs">{product.quantity}</p>
-            <Button variant="destructive" className="h-7 w-7 rounded-xl">
+            <Button
+              onClick={() => increaseProductQuantity(product.id)}
+              variant="destructive"
+              className="h-7 w-7 rounded-xl"
+            >
               <ChevronRightIcon size={14} />
             </Button>
           </div>
