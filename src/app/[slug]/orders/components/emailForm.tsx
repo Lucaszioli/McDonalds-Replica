@@ -63,7 +63,7 @@ const EmailForm = () => {
         <DrawerHeader>
           <DrawerTitle>Visualizar Pedidos</DrawerTitle>
           <DrawerDescription>
-            Insira seu cpf abaixo para ver seus pedidos
+            Insira seu email abaixo para ver seus pedidos
           </DrawerDescription>
         </DrawerHeader>
         <Form {...form}>
