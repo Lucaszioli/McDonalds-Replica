@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ConsumptionMethod } from "@prisma/client";
 import { Loader2Icon } from "lucide-react";
-import { useParams, useSearchParams } from "next/navigation";
+import { redirect, useParams, useSearchParams } from "next/navigation";
 import React, { useContext, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -54,7 +54,7 @@ interface FinishOrderDialogProps {
 
 const FinishOrderDialog = ({ open, onOpenChange }: FinishOrderDialogProps) => {
   const searchParams = useSearchParams();
-  const { products } = useContext(CartContext);
+  const { products, toggleCart, cleanCart } = useContext(CartContext);
   const { slug } = useParams<{ slug: string }>();
   const [isPending, startTransition] = useTransition();
   const form = useForm<FormSchema>({
@@ -79,7 +79,12 @@ const FinishOrderDialog = ({ open, onOpenChange }: FinishOrderDialogProps) => {
           slug,
         });
         onOpenChange(false);
+        toggleCart();
         toast.success("Pedido Finalizado com sucesso");
+        cleanCart();
+        redirect(
+          `/${slug}/orders/?email=${data.email}&consumptionMethod=${consumptionMethod}`,
+        );
       });
     } catch (error) {
       console.error(error);

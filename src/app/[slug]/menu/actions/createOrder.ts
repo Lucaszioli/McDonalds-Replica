@@ -1,7 +1,7 @@
 "use server";
 
 import { ConsumptionMethod, StatusOrder } from "@prisma/client";
-import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/prisma";
 
@@ -38,7 +38,6 @@ export const createOrder = async (input: CreateOrderInput) => {
     quantity: product.quantity,
     price: productsWithPrices.find((p) => p.id === product.id)!.price,
   }));
-  console.log(input.consumptionMethod);
   await db.order.create({
     data: {
       consumptionMethod: input.consumptionMethod,
@@ -61,5 +60,5 @@ export const createOrder = async (input: CreateOrderInput) => {
       ),
     },
   });
-  redirect(`/${input.slug}/orders/?email=${input.customerEmail}`);
+  revalidatePath(`/${input.slug}/orders`);
 };
